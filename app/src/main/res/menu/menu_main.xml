@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_rotation"
+        android:title="@string/rotation" />
+    <item
+        android:id="@+id/menu_rotationx"
+        android:title="@string/rotation" />
+    <item
+        android:id="@+id/menu_rotationy"
+        android:title="@string/rotation" />
+</menu>
