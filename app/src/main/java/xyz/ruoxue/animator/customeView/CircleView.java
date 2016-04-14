@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 // +----------------------------------------------------------------------
@@ -52,7 +53,7 @@ import android.view.View;
 public class CircleView extends View {
     private Paint textPaint;//文字颜色
     private Paint arcPaint;//外部弧形颜色
-    private  Paint innerPaint;
+    private Paint innerPaint;
 
 
     public CircleView(Context context) {
@@ -77,8 +78,9 @@ public class CircleView extends View {
         textPaint.setColor(Color.BLUE);
         arcPaint = new Paint();
         arcPaint.setColor(Color.CYAN);
-        innerPaint=new Paint();
+        innerPaint = new Paint();
         innerPaint.setColor(Color.RED);
+
     }
 
     /**
@@ -138,29 +140,70 @@ public class CircleView extends View {
      *
      * @param canvas the canvas on which the background will be drawn
      */
+
+    private int arc;
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawText("test", getWidth() / 2, getHeight() / 2, textPaint);
-
+        canvas.drawRect(0, 0, getWidth(), getHeight(), textPaint);
+        if (arc >=270) {
+            arc = 270;
+        } else {
+            arc += 10;
+        }
+//        for (int i = 0; i < 270; i += 10) {
         RectF oval = new RectF();
-        oval.left = 0;
-        oval.right = getWidth();
-        oval.top = (getHeight() - getWidth()) / 2;
-        oval.bottom = getWidth();
+        oval.left = getWidth() / 8;
+        oval.right = getWidth() * 7 / 8;
+        oval.top = (getHeight() - getWidth()) / 2 + getWidth() / 8;
+        oval.bottom = getWidth() - getWidth() / 8;
 //        canvas.drawRect(oval,arcPaint);
-        canvas.drawArc(oval, 0, 360, true, arcPaint);
+        canvas.drawArc(oval, -90, arc, true, arcPaint);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        invalidate();
+
         //--------------------------------------------------内部圆-------------------------------------------------------------------------//
 
         RectF inneroval = new RectF();
 
-        inneroval.left = getWidth()/4;
-        inneroval.right = getWidth()*3 / 4;
-        inneroval.top = (getHeight() - getWidth()) / 2+getWidth()/4;
-        inneroval.bottom = (getHeight() - getWidth()) / 2+getWidth()/2;
+
+        inneroval.left = getWidth() / 4;
+        inneroval.right = getWidth() * 3 / 4;
+        inneroval.top = (getHeight() - getWidth()) / 2 + getWidth() / 4;
+        inneroval.bottom = (getHeight() - getWidth()) / 2 + getWidth() / 2;
 
 //        canvas.drawRect(inneroval,innerPaint);
         canvas.drawArc(inneroval, 0, 360, true, innerPaint);
+    }
+
+    /**
+     * 事件  触摸
+     *
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        switch (event.getAction()) {
+
+            case MotionEvent.ACTION_DOWN:
+                break;
+            case MotionEvent.ACTION_UP:
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                break;
+            case MotionEvent.ACTION_MOVE:
+                break;
+
+        }
+
+        return false;
     }
 }
